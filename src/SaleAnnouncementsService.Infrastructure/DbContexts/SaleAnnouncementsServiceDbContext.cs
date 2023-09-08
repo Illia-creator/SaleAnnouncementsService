@@ -11,23 +11,24 @@ public class SaleAnnouncementsServiceDbContext : DbContext
     }
 
     public DbSet<Announcement> Announcements { get; set; }
-    public DbSet<Seller> Sellers { get; set; }
+    public DbSet<Photo> Photos { get; set; }
+     
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Announcement>(a =>
         {
-            a.HasKey(a => a.Id);
+        a.HasKey(a => a.Id);
+
+        a.HasOne(a => a.Photo)
+        .WithOne(a => a.Annoncement)
+        .HasForeignKey<Photo>(a => a.AnnoncementId);
         });
 
-        modelBuilder.Entity<Seller>(s =>
+        modelBuilder.Entity<Photo>(b =>
         {
-            s.HasKey(s => s.Id);
+            b.HasKey(b => b.Id);
 
-            s.HasMany(s => s.Announcements)
-            .WithOne(s => s.Seller)
-            .HasForeignKey(s => s.Id);
         });
-
     }
 }

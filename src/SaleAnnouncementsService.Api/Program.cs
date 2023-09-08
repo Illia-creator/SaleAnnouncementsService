@@ -1,4 +1,7 @@
+using Mapster;
+using MapsterMapper;
 using Microsoft.EntityFrameworkCore;
+using SaleAnnouncementsService.Application.Mappers;
 using SaleAnnouncementsService.Domain.Repositories;
 using SaleAnnouncementsService.Infrastructure.DbContexts;
 using SaleAnnouncementsService.Infrastructure.Repositories;
@@ -15,7 +18,19 @@ builder.Services.AddDbContext<SaleAnnouncementsServiceDbContext>(options =>
 {
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+static TypeAdapterConfig GetConfigureMappingConfig()
+{
+    var config = new TypeAdapterConfig();
+
+    new RegisterMapper().Register(config);
+
+    return config;
+}
 builder.Services.AddScoped<IAnnouncementRepository, AnnouncementRepository>();
+builder.Services.AddSingleton(GetConfigureMappingConfig());
+builder.Services.AddScoped<IMapper, ServiceMapper>();
+
+
 
 var app = builder.Build();
 

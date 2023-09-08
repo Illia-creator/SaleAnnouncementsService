@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using SaleAnnouncementsService.Infrastructure.DbContexts;
@@ -11,9 +12,11 @@ using SaleAnnouncementsService.Infrastructure.DbContexts;
 namespace SaleAnnouncementsService.Infrastructure.Migrations
 {
     [DbContext(typeof(SaleAnnouncementsServiceDbContext))]
-    partial class SaleAnnouncementsServiceDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230908073424_PhotosAdded")]
+    partial class PhotosAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -73,7 +76,7 @@ namespace SaleAnnouncementsService.Infrastructure.Migrations
                     b.HasIndex("AnnoncementId")
                         .IsUnique();
 
-                    b.ToTable("Photos");
+                    b.ToTable("Photo");
                 });
 
             modelBuilder.Entity("SaleAnnouncementsService.Domain.Entities.Photo", b =>

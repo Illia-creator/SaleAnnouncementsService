@@ -8,7 +8,11 @@ public class RegisterMapper : IRegister
 {
     public void Register(TypeAdapterConfig config)
     {
-        config.NewConfig<Announcement, ResultAnnouncementInList>()
-            .RequireDestinationMemberSource(true);
+        config.NewConfig<Announcement, ResultAnnouncementInList>();
+        config.NewConfig<Photo, ResultAnnouncementInList>();
+
+
+        config.NewConfig<Announcement, ResultAnnouncement>();
+        config.NewConfig<Photo, ResultAnnouncement>();
     }
 }

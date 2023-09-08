@@ -18,7 +18,7 @@ public class AnnoncementsController : ControllerBase
 
     [HttpGet]
     [Route("announcement")]
-    public async Task<IActionResult> GettById(Guid Id)
+    public async Task<IActionResult> GetById(Guid Id)
     {
         var result = await _repository.GetFullInfo(Id);
 
@@ -30,6 +30,15 @@ public class AnnoncementsController : ControllerBase
     public async Task<IActionResult> CreateAnnouncement(CreateAnnouncementDto announcementDto)
     {
         var result = await _repository.Create(announcementDto);
+
+        return Ok(result);
+    }
+
+    [HttpGet]
+    [Route("announcements")]
+    public async Task<IActionResult> GetAll([FromQuery] SortingDto sortingDto)
+    {
+        var result = await _repository.GetAll(sortingDto);
 
         return Ok(result);
     }

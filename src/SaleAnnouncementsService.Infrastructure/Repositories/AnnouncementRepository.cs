@@ -1,10 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Mapster;
+using Microsoft.EntityFrameworkCore;
 using SaleAnnouncementsService.Domain.Entities;
 using SaleAnnouncementsService.Domain.Repositories;
 using SaleAnnouncementsService.Infrastructure.DbContexts;
 using SaleAnnouncementsService.Shared.Dtos;
 using System.Diagnostics;
 using System.Linq;
+using System.Xml.XPath;
 
 namespace SaleAnnouncementsService.Infrastructure.Repositories
 {
@@ -31,7 +33,7 @@ namespace SaleAnnouncementsService.Infrastructure.Repositories
                 if (createDto.Price == null || createDto.Price < 0)
                     throw new Exception("You should Write price!");
 
-            var seller = _context.Sellers.FirstOrDefault();
+
 
             var newAnnouncement = new Announcement()
             {
@@ -39,30 +41,52 @@ namespace SaleAnnouncementsService.Infrastructure.Repositories
                 Title = createDto.Title,
                 Description = createDto.Description,
                 Price = createDto.Price,
-                PhotoLinks = createDto.PhotoLinks,
-                Created = DateTime.UtcNow,
-                SellerId = seller.Id
+                Created = DateTime.UtcNow
             };
+
+            var newPhotos = new Photo()
+            {
+                Id = Guid.NewGuid(),
+                AnnoncementId = newAnnouncement.Id,
+                MainPhotoLink = createDto.MainPhotoLink,
+                SeckondPhotoLink = createDto.SeckondPhotoLink,  
+                ThirdPhotoLink = createDto.ThirdPhotoLink
+            };
+
 
             _context.Announcements.Add(newAnnouncement);
+            _context.Photos.Add(newPhotos);
             _context.SaveChanges();
 
-            var result = new ResultAnnouncement()
-            {
-                Id = newAnnouncement.Id,
-                Title = newAnnouncement.Title,
-                Price = newAnnouncement.Price,
-                MainPhotoLink = newAnnouncement.PhotoLinks,
-                SellerName = seller.Name,
-                SellerPhoneNumber = seller.PhoneNumber
-            };
+            var result = new ResultAnnouncement();
+
+            newAnnouncement.Adapt(result);
+            newPhotos.Adapt(result);
 
             return Task.FromResult(result);
         }
 
         public Task<List<ResultAnnouncementInList>> GetAll(SortingDto sortingDto)
         {
-            throw new NotImplementedException();
+            var announcements = _context.Announcements.ToList();
+            var photos = _context.Photos;
+
+            var result = new List<ResultAnnouncementInList>();  
+
+            foreach (var announcement in announcements)
+            {
+                var photo = photos.FirstOrDefault(x => x.AnnoncementId == announcement.Id);
+
+                var timeResult = new ResultAnnouncementInList();
+
+                announcement.Adapt(timeResult);
+                photo.Adapt(timeResult);
+
+                result.Add(timeResult);
+            }
+
+            return Task.FromResult(result);
+
         }
 
         public async Task<ResultAnnouncement> GetFullInfo(Guid id)
@@ -72,17 +96,12 @@ namespace SaleAnnouncementsService.Infrastructure.Repositories
             if (announcement == null)
                 throw new Exception($"Announcement with id {id} not found");
 
-            var seller = await _context.Sellers.FirstOrDefaultAsync(x => x.Id == id);
+            var photos = await _context.Photos.FirstOrDefaultAsync(x => x.AnnoncementId == announcement.Id);
 
-            var result = new ResultAnnouncement()
-            {
-                Id = announcement.Id,
-                Title = announcement.Title,
-                Price = announcement.Price,
-                MainPhotoLink = announcement.PhotoLinks,
-                SellerName = seller.Name,
-                SellerPhoneNumber = seller.PhoneNumber
-            };
+            var result = new ResultAnnouncement();
+
+            announcement.Adapt(result);
+            photos.Adapt(result);
 
             return result;
         }

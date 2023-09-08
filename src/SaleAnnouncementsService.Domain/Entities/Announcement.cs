@@ -6,8 +6,6 @@ public class Announcement
     public string Title { get; set; }
     public string Description { get; set; }
     public double Price { get; set; }
-    public string PhotoLinks { get; set; }
+    public Photo Photo { get; set; }
     public DateTime Created { get; set; }
-    public Seller Seller { get; set; }
-    public Guid SellerId { get; set; }
 }
