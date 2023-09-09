@@ -4,6 +4,7 @@ using SaleAnnouncementsService.Domain.Entities;
 using SaleAnnouncementsService.Domain.Repositories;
 using SaleAnnouncementsService.Infrastructure.DbContexts;
 using SaleAnnouncementsService.Shared.Dtos;
+using SaleAnnouncementsService.Shared.Exceptions;
 using System.Diagnostics;
 using System.Linq;
 using System.Xml.XPath;
@@ -19,74 +20,43 @@ namespace SaleAnnouncementsService.Infrastructure.Repositories
             _context = context;
         }
 
-        public Task<ResultAnnouncement> Create(CreateAnnouncementDto createDto)
+        public async Task<ResultAnnouncement> Create(CreateAnnouncementDto createDto)
         {
-            if (createDto == null)
-                throw new Exception("Empty Announcement Creating");
 
-                if (createDto.Title == null || createDto.Title.Length > 200)
-                    throw new Exception("Title should be between 0 and 200 symbols");
+            var newAnnouncement = Announcement.Init(createDto);
 
-                if (createDto.Description.Length > 200)
-                    throw new Exception("Deskription should be between 0 and 1000 symbols");
-
-                if (createDto.Price == null || createDto.Price < 0)
-                    throw new Exception("You should Write price!");
-
-
-
-            var newAnnouncement = new Announcement()
-            {
-                Id = Guid.NewGuid(),
-                Title = createDto.Title,
-                Description = createDto.Description,
-                Price = createDto.Price,
-                Created = DateTime.UtcNow
-            };
-
-            var newPhotos = new Photo()
-            {
-                Id = Guid.NewGuid(),
-                AnnoncementId = newAnnouncement.Id,
-                MainPhotoLink = createDto.MainPhotoLink,
-                SeckondPhotoLink = createDto.SeckondPhotoLink,  
-                ThirdPhotoLink = createDto.ThirdPhotoLink
-            };
-
+            var newPhotos = new Photo(newAnnouncement.Id, createDto);
 
             _context.Announcements.Add(newAnnouncement);
             _context.Photos.Add(newPhotos);
-            _context.SaveChanges();
+
+            await _context.SaveChangesAsync();
 
             var result = new ResultAnnouncement();
 
             newAnnouncement.Adapt(result);
             newPhotos.Adapt(result);
 
-            return Task.FromResult(result);
+            return result  ;
         }
 
-        public Task<List<ResultAnnouncementInList>> GetAll(SortingDto sortingDto)
+        public async Task<List<ResultAnnouncementInList>> GetAll(SortingDto sortingDto)
         {
-            var announcements = _context.Announcements.ToList();
-            var photos = _context.Photos;
+            var result = new List<ResultAnnouncementInList>();
 
-            var result = new List<ResultAnnouncementInList>();  
+            var announcements = await _context.Announcements.Include(x => x.Photo).AsNoTracking().ToListAsync();
 
             foreach (var announcement in announcements)
             {
-                var photo = photos.FirstOrDefault(x => x.AnnoncementId == announcement.Id);
-
                 var timeResult = new ResultAnnouncementInList();
 
                 announcement.Adapt(timeResult);
-                photo.Adapt(timeResult);
+                announcement.Photo.Adapt(timeResult);
 
                 result.Add(timeResult);
             }
 
-            return Task.FromResult(result);
-
+            return result;
         }
 
         public async Task<ResultAnnouncement> GetFullInfo(Guid id)
@@ -94,15 +64,16 @@ namespace SaleAnnouncementsService.Infrastructure.Repositories
             var announcement = await _context.Announcements.FirstOrDefaultAsync(x => x.Id == id);
 
             if (announcement == null)
-                throw new Exception($"Announcement with id {id} not found");
+                throw new CustomException(ExceptionCodes.ValueIsNullOrEmpty,
+                    $"Annoncement with id: {id} not found");
 
             var photos = await _context.Photos.FirstOrDefaultAsync(x => x.AnnoncementId == announcement.Id);
 
             var result = new ResultAnnouncement();
 
-            announcement.Adapt(result);
             photos.Adapt(result);
-
+            announcement.Adapt(result);
+            
             return result;
         }
     }
