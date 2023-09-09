@@ -1,0 +1,40 @@
+﻿<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Test</title>
+    <link rel="stylesheet" href="theme.css">
+</head>
+
+<body>
+
+    <div class="container pt-5" id="app-div">
+        <div class="card">
+            <h1>{{title}}</h1>
+            <div class="form-control">
+                <input type="text"
+                v-bind:placeholder="placeholderAttribute" 
+                v-bind:value="inputTopic"
+                v-on:input="inputValueHandler"
+                v-on:keypress.enter="addNewNote"/>
+            </div>           
+            <button class="btn" v-on:click="addNewNote">Add</button>
+            <hr />
+            <ul class="list" v-if="notes.length !== 0">
+                <li class="list-item" v-for="(myNote, idx) in notes">
+                    ({{idx + 1}}) {{ myNote }}
+                    <button class="btn danger" v-on:click="deleteNote(idx)">delete</button>
+                </li>    
+            </ul>
+            <div v-else>Any notes written</div>
+        </div>
+    </div>
+
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>
