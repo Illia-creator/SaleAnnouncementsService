@@ -6,27 +6,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Test</title>
     <link rel="stylesheet" href="theme.css">
+    <style>
+        [v-cloak]
+        {display: none;}
+    </style>
 </head>
 
 <body>
 
-    <div class="container pt-5" id="app-div">
+    <div class="container pt-5" id="app-div" v-cloak>
         <div class="card">
             <h1>{{title}}</h1>
-            <div class="form-control">
-                <input type="text"
-                v-bind:placeholder="placeholderAttribute" 
-                v-bind:value="inputTopic"
-                v-on:input="inputValueHandler"
-                v-on:keypress.enter="addNewNote"/>
-            </div>           
-            <button class="btn" v-on:click="addNewNote">Add</button>
+                     
+            <button class="btn" @click="getAll">Update</button>
             <hr />
-            <ul class="list" v-if="notes.length !== 0">
-                <li class="list-item" v-for="(myNote, idx) in notes">
-                    ({{idx + 1}}) {{ myNote }}
-                    <button class="btn danger" v-on:click="deleteNote(idx)">delete</button>
+            <ul class="list" v-if="announcements.length !== 0">
+                <li class="list-item" v-for="(announce, idx) in announcements" >
+                    ({{idx + 1}}) 
+                    <img src="" alt="announce.mainPhoto" >
+                    
+                    <h4 >{{ announce.title }}</h4>
+                    <h3 >{{ announce.price }}</h3>          
                 </li>    
+                <hr>
+                <li>
+                   <strong> Amount: {{announcements.length}} </strong> 
+                </li>
             </ul>
             <div v-else>Any notes written</div>
         </div>
@@ -34,7 +39,7 @@
 
 
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-    <script src="app.js"></script>
+    <script type="module" src="app.js"></script>
 </body>
 
 </html>

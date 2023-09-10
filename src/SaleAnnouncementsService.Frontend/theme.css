@@ -56,7 +56,24 @@ h2 {
 
 h3 {
     font-size: 1.35rem;
+    width: 100px;
+    text-align: left;
 }
+
+h4 {
+    width: 400px; 
+    height: 150px;
+    text-align: left;
+    
+}
+
+img {
+    width: 200px; 
+    height: 150px;
+    border: 2px solid #000;
+}
+
+
 
 /*.primary {*/
 /*    color: #42b983;*/
@@ -399,3 +416,5 @@ h3 {
 .navbar-menu li a:hover, .navbar-menu li a.active {
     border-bottom: 2px solid #3eaf7c;
 }
+
+
