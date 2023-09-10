@@ -5,9 +5,6 @@ using SaleAnnouncementsService.Domain.Repositories;
 using SaleAnnouncementsService.Infrastructure.DbContexts;
 using SaleAnnouncementsService.Shared.Dtos;
 using SaleAnnouncementsService.Shared.Exceptions;
-using System.Diagnostics;
-using System.Linq;
-using System.Xml.XPath;
 
 namespace SaleAnnouncementsService.Infrastructure.Repositories
 {
@@ -37,7 +34,7 @@ namespace SaleAnnouncementsService.Infrastructure.Repositories
             newAnnouncement.Adapt(result);
             newPhotos.Adapt(result);
 
-            return result  ;
+            return result;
         }
 
         public async Task<List<ResultAnnouncementInList>> GetAll(SortingDto sortingDto)
@@ -45,6 +42,34 @@ namespace SaleAnnouncementsService.Infrastructure.Repositories
             var result = new List<ResultAnnouncementInList>();
 
             var announcements = await _context.Announcements.Include(x => x.Photo).AsNoTracking().ToListAsync();
+
+
+            if (!string.IsNullOrEmpty(sortingDto.Сriterion) && sortingDto.Сriterion != "\"\"")
+            {
+                IOrderedEnumerable<Announcement> sortedAnnouncements = null;
+
+                switch (sortingDto.Сriterion)
+                {
+                    case "date":
+                        sortedAnnouncements = sortingDto.Order == "asc"
+                            ? announcements.OrderBy(a => a.Created)
+                            : announcements.OrderByDescending(a => a.Created);
+                        break;
+
+                    case "price":
+                        sortedAnnouncements = sortingDto.Order == "asc"
+                            ? announcements.OrderBy(a => a.Price)
+                            : announcements.OrderByDescending(a => a.Price);
+                        break;
+
+                    default:
+                        
+                        break;
+                }
+
+                announcements = sortedAnnouncements.ToList();
+            }
+            
 
             foreach (var announcement in announcements)
             {
@@ -73,7 +98,7 @@ namespace SaleAnnouncementsService.Infrastructure.Repositories
 
             photos.Adapt(result);
             announcement.Adapt(result);
-            
+
             return result;
         }
     }
