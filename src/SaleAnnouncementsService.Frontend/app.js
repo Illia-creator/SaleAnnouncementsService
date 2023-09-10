@@ -1,26 +1,35 @@
-﻿const App = {
+﻿import axios from 'https://cdn.jsdelivr.net/npm/axios@1.3.5/+esm';
+
+
+const App = {
     data() {
-        return {
-            counter: 0,
-            title: "Counter",
-            placeholderAttribute: "Enter Topic",
+        return {           
+            title: "Announcements:",
             inputTopic: "",
-            notes: ["first"]
+            announcements: [],
+            brHtml: "<br>"
 
         }
     },
 
     methods:{
-        inputValueHandler(event){
-            this.inputTopic = event.target.value            
+        getAll(){
+            axios.get('http://localhost:5072/api/Annoncements/announcements?PriceOrder=%22%22&PublishDateOrder=%22%22')
+            .then(response => {
+                this.announcements = response.data
+            })
+            .catch(error => {
+                console.error(error)
+            })
         },
-        addNewNote(){
-            this.notes.push(this.inputTopic)
-            this.inputTopic = ""
-        },
-        deleteNote(idx){
-            this.notes.splice(idx, 1)
-            }
+
+        
+    },
+   
+    watch:{
+        inputTopic(value){
+            console.log(value)
+        }
     }
 }
 

@@ -29,6 +29,15 @@ static TypeAdapterConfig GetConfigureMappingConfig()
 builder.Services.AddScoped<IAnnouncementRepository, AnnouncementRepository>();
 builder.Services.AddSingleton(GetConfigureMappingConfig());
 builder.Services.AddScoped<IMapper, ServiceMapper>();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowSpecificOrigin", builder =>
+    {
+        builder.WithOrigins("http://127.0.0.1:5500")
+               .AllowAnyHeader()
+               .AllowAnyMethod();
+    });
+});
 
 
 
@@ -46,5 +55,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseCors("AllowSpecificOrigin");
 
 app.Run();
