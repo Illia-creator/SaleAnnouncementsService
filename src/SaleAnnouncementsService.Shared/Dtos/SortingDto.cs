@@ -2,6 +2,6 @@
 
 public class SortingDto
 {
-    public string PriceOrder { get; set; }
-    public string PublishDateOrder { get; set; }
+    public string Сriterion { get; set; }
+    public string Order { get; set; }
 }
