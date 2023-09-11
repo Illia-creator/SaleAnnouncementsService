@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create</title>
+    <link rel="stylesheet" href="theme.css">
+    <style>
+        [v-cloak]
+        {display: none;}
+    </style>
+</head>
+<body>
+    
+    <div class="container pt-5" id="app-div" v-cloak>
+        <div class="card" >
+            <h1>{{windowTitle}}</h1>
+            <div class="form-control">
+                <label for="myTextarea">{{ titleInstructions }}</label>
+                <textarea id="myTextarea" v-model="title" :maxlength="titleMax" rows="3" cols="125"></textarea>
+                <div id="charCount"></div>
+            </div>
+
+            <div class="form-controlDescription">
+                <label for="myTextareaDescription">{{ descriptionInstructions }}</label>
+                <textarea id="myTextareaDescription" v-model="description" :maxlength="descriptionMax" rows="8" cols="125"></textarea>
+                <div id="charCountDescription"></div>
+            </div>
+
+            <div>
+                <br>
+                <label>{{ priceInstructions }}</label>
+                <input type="number" v-model="price" >
+                <p v-if="price >= 0" >Entered Number: {{ price }}</p>
+                <p v-else>Number is less than 0</p>
+            </div>
+
+            <button class="btn" @click="createAnnouncement">Create</button>
+            <button class="btn danger" @click="goBack">Go Back</button>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script type="module" src="createAnnounce.js"></script>
+
+</body>
+</html>

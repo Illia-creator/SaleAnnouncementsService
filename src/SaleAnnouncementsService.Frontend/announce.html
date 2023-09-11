@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Announce</title>
+    <link rel="stylesheet" href="helpTheme.css">
+    <style>
+        [v-cloak]
+        {display: none;}
+    </style>
+</head>
+<body>
+    <div class="container pt-5" id="announce-id" v-cloak>
+        <div class="card" >
+            <h1>{{title}} &nbsp&nbsp&nbsp {{announcement.price}}</h1>
+            <button class="btn" @click="selectAnnoncement">Go Back</button>
+            <div class="container">
+                <div class="left-column" >
+                    <br>
+                    <img class="detal" src="" :alt="announcement.mainPhotoLink">
+                    <br>
+                    <img src="" :alt="announcement.seckondPhotoLink">
+                    <br>
+                    <img src="" :alt="announcement.thirdPhotoLink">
+                </div>
+                <div class="right-column">
+                    <h3 > {{ announcement.title }}  </h3>
+                    <h3 class="desk">{{ announcement.description }}  </h3>
+                </div>
+            </div>
+        
+        
+        </div>
+    </div>
+
+    
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script type="module" src="announceId.js"></script>
+</body>
+</html>

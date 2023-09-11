@@ -2,6 +2,6 @@
 
 public class SortingDto
 {
-    public string Сriterion { get; set; }
+    public string Criterion { get; set; }
     public string Order { get; set; }
 }

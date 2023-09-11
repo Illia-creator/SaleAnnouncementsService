@@ -44,11 +44,11 @@ namespace SaleAnnouncementsService.Infrastructure.Repositories
             var announcements = await _context.Announcements.Include(x => x.Photo).AsNoTracking().ToListAsync();
 
 
-            if (!string.IsNullOrEmpty(sortingDto.Сriterion) && sortingDto.Сriterion != "\"\"")
+            if (!string.IsNullOrEmpty(sortingDto.Criterion) && sortingDto.Criterion != "\"\"")
             {
                 IOrderedEnumerable<Announcement> sortedAnnouncements = null;
 
-                switch (sortingDto.Сriterion)
+                switch (sortingDto.Criterion)
                 {
                     case "date":
                         sortedAnnouncements = sortingDto.Order == "asc"
@@ -75,9 +75,9 @@ namespace SaleAnnouncementsService.Infrastructure.Repositories
             {
                 var timeResult = new ResultAnnouncementInList();
 
-                announcement.Adapt(timeResult);
                 announcement.Photo.Adapt(timeResult);
-
+                announcement.Adapt(timeResult);
+                
                 result.Add(timeResult);
             }
 
