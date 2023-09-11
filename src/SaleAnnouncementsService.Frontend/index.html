@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Test</title>
+    <title>List</title>
     <link rel="stylesheet" href="theme.css">
     <style>
         [v-cloak]
@@ -15,25 +15,49 @@
 <body>
 
     <div class="container pt-5" id="app-div" v-cloak>
-        <div class="card">
+        <div class="card" >
             <h1>{{title}}</h1>
                      
             <button class="btn" @click="getAll">Update</button>
+
+            <select class="dropdown-el" id="category" v-model="selectedCriterion"  @change="updateCriterion">
+                <option criterion1="date" selected>By Date</option>
+                <option criterion2="price">By Price</option>
+            </select>
+
+            <select class="dropdown-el" id="order" v-model="selectedOrder" @change="updateOrder">
+                <option order1="asc" selected>Ascending</option>
+                <option order2="desc">Descending</option>
+            </select>
+
+            <button class="btn" @click="createAnnoncement" >Create New</button>
+
             <hr />
-            <ul class="list" v-if="announcements.length !== 0">
-                <li class="list-item" v-for="(announce, idx) in announcements" >
-                    ({{idx + 1}}) 
+            <ul class="list" v-if="paginatedAnnouncements.length !== 0">
+                <li class="list-item" v-for="(announce, idx) in paginatedAnnouncements" @click="selectAnnoncement(announce.id)">
+                    {{ idx + 1 }} 
                     <img src="" alt="announce.mainPhoto" >
                     
                     <h4 >{{ announce.title }}</h4>
                     <h3 >{{ announce.price }}</h3>          
-                </li>    
+                </li> 
+
                 <hr>
+
+                <div class="pagination">
+                    <button class="btn" @click="prevPage">Previous</button>
+                    <span>Page {{ currentPage }} of {{ totalPages }}</span>
+                    <span>&nbsp&nbsp</span>
+                    <button class="btn" @click="nextPage"> Next</button>
+                </div>
+
+                <hr>
+
                 <li>
-                   <strong> Amount: {{announcements.length}} </strong> 
+                   <strong> Amount: {{ announcements.length }} </strong> 
                 </li>
             </ul>
-            <div v-else>Any notes written</div>
+            <div v-else>{{ messageForEmpty }}</div>
         </div>
     </div>
 

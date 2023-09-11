@@ -1,4 +1,4 @@
-﻿@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
     *{
     box-sizing: border-box;
 }
@@ -51,21 +51,19 @@ h1 {
 h2 {
     font-size: 1.65rem;
     padding-bottom: 0.3rem;
-    width: 100px;
+    border-bottom: 1px solid #eaecef;
 }
 
 h3 {
     font-size: 1.35rem;
-    width: 100px;
+    width: 600px;
     text-align: left;
 }
 
 h4 {
     width: 400px; 
     height: 150px;
-    text-align: left;  
-    display: inline-block;
-    word-wrap: break-word;  
+    text-align: left;    
 }
 
 img {
@@ -120,7 +118,6 @@ img {
     transition: timing all ease-in-out;
     
         background: #fff;
-        
     input {
       width: 1px;
       height: 1px;
@@ -155,7 +152,6 @@ img {
         position: relative;
       }
     }
-    
     
     &::after {
       content:"";
@@ -247,7 +243,8 @@ img {
 
 .container {
     margin: 0 auto;
-    max-width: 1000px;
+    max-width: 1000px;    
+    display: flex;
     align-items: flex-start;
 }
 
