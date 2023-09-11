@@ -8,7 +8,7 @@ public class Photo
     public Guid AnnoncementId { get; set; }
     public Announcement Annoncement { get; set; }
     public string MainPhotoLink { get; set; }
-    public string SeckondPhotoLink { get; set; }
+    public string SecondPhotoLink { get; set; }
     public string ThirdPhotoLink { get; set; }
 
     public Photo()
@@ -21,7 +21,7 @@ public class Photo
         Id = Guid.NewGuid();
         AnnoncementId = createdAnnoncementId;
         MainPhotoLink = createAnnouncementDto.MainPhotoLink;
-        SeckondPhotoLink = createAnnouncementDto.SeckondPhotoLink;
+        SecondPhotoLink = createAnnouncementDto.SecondPhotoLink;
         ThirdPhotoLink = createAnnouncementDto.ThirdPhotoLink;
     }
 }
