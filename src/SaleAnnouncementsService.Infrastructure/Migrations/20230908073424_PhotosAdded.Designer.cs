@@ -63,7 +63,7 @@ namespace SaleAnnouncementsService.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("SeckondPhotoLink")
+                    b.Property<string>("SecondPhotoLink")
                         .IsRequired()
                         .HasColumnType("text");
 

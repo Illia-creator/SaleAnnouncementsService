@@ -22,7 +22,7 @@ namespace SaleAnnouncementsService.Infrastructure.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     AnnoncementId = table.Column<Guid>(type: "uuid", nullable: false),
                     MainPhotoLink = table.Column<string>(type: "text", nullable: false),
-                    SeckondPhotoLink = table.Column<string>(type: "text", nullable: false),
+                    SecondPhotoLink = table.Column<string>(type: "text", nullable: false),
                     ThirdPhotoLink = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>

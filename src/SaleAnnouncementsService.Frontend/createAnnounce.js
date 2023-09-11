@@ -11,7 +11,7 @@ const App = {
             price: 0,
 
             mainPhotoLink: "string",
-            seckondPhotoLink: "string",
+            secondPhotoLink: "string",
             thirdPhotoLink: "string",
 
             titleInstructions: "Enter Title ",
@@ -33,7 +33,7 @@ const App = {
                     description: this.description,
                     price: this.price,
                     mainPhotoLink: this.mainPhotoLink,
-                    seckondPhotoLink: this.seckondPhotoLink,
+                    secondPhotoLink: this.secondPhotoLink,
                     thirdPhotoLink: this.thirdPhotoLink                  
                 })
                 .then(response => {
